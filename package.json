@@ -1,0 +1,26 @@
+{
+  "name": "talk-cli",
+  "version": "1.0.0",
+  "description": "51Talk前端开发脚手架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccbabi/talk-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ccbabi/talk-cli/issues"
+  },
+  "homepage": "https://github.com/ccbabi/talk-cli#readme",
+  "bin": {
+    "talk": "./bin/talk"
+  },
+  "dependencies": {
+    "commander": "^2.15.0"
+  }
+}
