@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+const path = require('path')
 const program = require('commander')
 const init = require('../command/init')
 const start = require('../command/start')
 const build = require('../command/build')
+const relative = require('../lib/relative')
 
 program
   .command('init <模板名称> [项目名称]')
@@ -24,7 +26,9 @@ program
 program
   .command('start [project]')
   .description('开发一个项目')
-  .action(start)
+  .action(project => {
+    start(path.basename(project && project !== '.' ? project : relative.PATH_CWD))
+  })
 
 program
   .command('build [project]')
