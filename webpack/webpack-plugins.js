@@ -33,7 +33,9 @@ if (process.NODE_ENV !== constant.PRODUCTION) {
         compress: {
           warnings: false
         }
-      })
+      }),
+      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.ProgressPlugin()
     )
   }
 }

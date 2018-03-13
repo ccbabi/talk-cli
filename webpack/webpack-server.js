@@ -1,4 +1,6 @@
 const relative = require('../lib/relative')
+const config = require('../config')
+const hooks = require('./webpack-hook')
 
 module.exports = {
   contentBase: relative.cwd('dist'),
@@ -11,5 +13,7 @@ module.exports = {
     warnings: true,
     errors: true
   },
-  noInfo: true
+  noInfo: config.noInfo,
+  https: config.https,
+  ...hooks
 }

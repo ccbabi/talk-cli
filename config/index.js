@@ -6,7 +6,10 @@ const defaultConfig = {
   multiple: false,
   uglify: true,
   provide: null,
-  define: null
+  define: null,
+  noInfo: true,
+  https: false,
+  port: 1234
 }
 
 let packageConfig
