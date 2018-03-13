@@ -3,7 +3,10 @@ const relative = require('../lib/relative')
 const pkgPath = relative.cwd('./package.json')
 
 const defaultConfig = {
-  multiple: false
+  multiple: false,
+  uglify: true,
+  provide: null,
+  define: null
 }
 
 let packageConfig

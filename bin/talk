@@ -2,9 +2,6 @@
 
 const path = require('path')
 const program = require('commander')
-const init = require('../command/init')
-const start = require('../command/start')
-const build = require('../command/build')
 const relative = require('../lib/relative')
 
 program
@@ -13,7 +10,7 @@ program
   .option('-t --type <type>', '指定项目类型', /^(?:html|wap)$/i, 'html')
   .option('-w --weixin', '使用微信')
   .option('-c, --clone', '使用git clone')
-  .action(init)
+  .action(require('../command/init'))
   .on('--help', function () {
     console.log()
     console.log('  示例:')
@@ -27,13 +24,13 @@ program
   .command('start [project]')
   .description('开发一个项目')
   .action(project => {
-    start(path.basename(project && project !== '.' ? project : relative.PATH_CWD))
+    require('../command/start')(path.basename(project && project !== '.' ? project : relative.PATH_CWD))
   })
 
 program
   .command('build [project]')
   .description('打包一个项目')
-  .action(build)
+  .action(require('../command/build'))
 
 program
   .command('*', { isDefault: true })

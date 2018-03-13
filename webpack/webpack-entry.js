@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const relative = require('../lib/relative')
 const logger = require('../lib/logger')
-const config = require('./config')
+const config = require('../config')
 
 let entryInfos
 
