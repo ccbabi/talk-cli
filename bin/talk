@@ -23,8 +23,12 @@ program
 program
   .command('start [project]')
   .description('开发一个项目')
-  .action(project => {
-    require('../command/start')(path.basename(project && project !== '.' ? project : relative.PATH_CWD))
+  .option('-o --open', '打开浏览器')
+  .action((project, option) => {
+    require('../command/start')(
+      path.basename(project && project !== '.' ? project : relative.PATH_CWD),
+      option
+    )
   })
 
 program

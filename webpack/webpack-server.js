@@ -1,9 +1,8 @@
-const relative = require('../lib/relative')
 const config = require('../config')
 const hooks = require('./webpack-hook')
 
 module.exports = {
-  contentBase: relative.cwd('dist'),
+  contentBase: false,
   stats: {
     colors: true
   },
