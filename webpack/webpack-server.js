@@ -24,6 +24,6 @@ module.exports = {
   },
   noInfo: config.noInfo,
   https: config.https,
-  index: `${pageName}.html`,
+  index: config.multiple ? `${pageName}.html` : 'index.html',
   ...hooks
 }
