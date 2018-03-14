@@ -3,6 +3,7 @@
 const path = require('path')
 const program = require('commander')
 const relative = require('../lib/relative')
+const opt = require('../config/option')
 
 program
   .command('init <模板名称> [项目名称]')
@@ -24,7 +25,9 @@ program
   .command('start [project]')
   .description('开发一个项目')
   .option('-o --open', '打开浏览器')
+  .option('-p --proxy', '开启联调模式')
   .action((project, option) => {
+    opt.set(option)
     require('../command/start')(
       path.basename(project && project !== '.' ? project : relative.PATH_CWD),
       option

@@ -9,7 +9,14 @@ const defaultConfig = {
   define: null,
   noInfo: true,
   https: false,
-  port: 1234
+  port: 1234,
+  mockDir: 'mock',
+  context: '/api',
+  callback: 'callback',
+  target: null,
+  changeOrigin: true,
+  static: '/static',
+  staticDir: 'static'
 }
 
 let packageConfig
