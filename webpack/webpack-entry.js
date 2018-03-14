@@ -43,7 +43,7 @@ function genEntryInfo (dir) {
 
 if (!exists) {
   console.log('')
-  logger.error('Oops, 没有找到入口')
+  logger.error('Oops, 没有找到入口！')
   console.log('')
   process.exit(1)
 }

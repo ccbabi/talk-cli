@@ -17,6 +17,6 @@ module.exports = (project, option) => {
   server.listen(config.port, '0.0.0.0', () => {
     const host = `${config.https ? 'https' : 'http'}://127.0.0.1:${config.port}`
     logger.success(`服务器启动在：${host}`)
-    option.open && opn(host)
+    if (option.open || option.page !== 'nav') opn(host)
   })
 }

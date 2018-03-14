@@ -24,8 +24,9 @@ program
 program
   .command('start [project]')
   .description('开发一个项目')
-  .option('-o --open', '打开浏览器')
-  .option('-p --proxy', '开启联调模式')
+  .option('-o --open', '打开浏览器, 默认不打开')
+  .option('-p --proxy', '开启联调模式，默认不开启')
+  .option('-P --page <page>', '启动浏览器并打开指定页面，默认为导航页', 'nav')
   .action((project, option) => {
     opt.set(option)
     require('../command/start')(

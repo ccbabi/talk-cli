@@ -4,6 +4,7 @@ const isPlainObject = require('is-plain-object')
 const entryInfos = require('./webpack-entry')
 const constant = require('../config/constant')
 const config = require('../config')
+const relative = require('../lib/relative')
 
 function getEntry () {
   return entryInfos.reduce((webpackEntry, entryInfo) => {
@@ -14,7 +15,7 @@ function getEntry () {
 }
 
 function getHtmlPlugins () {
-  return entryInfos.reduce((plugins, entryInfo) => {
+  const plugins = entryInfos.reduce((plugins, entryInfo) => {
     const { entryExists, template, templateExists, pageName } = entryInfo
     let htmlOption
 
@@ -40,6 +41,18 @@ function getHtmlPlugins () {
 
     return plugins
   }, [])
+
+  if (process.NODE_ENV !== constant.PRODUCTION && config.multiple) {
+    plugins.push(new HtmlWebpackPlugin({
+      title: '51Talk - 开发导航页',
+      filename: 'nav.html',
+      template: relative.cmd('template', 'nav.ejs'),
+      inject: false,
+      pages: getNavPages()
+    }))
+  }
+
+  return plugins
 }
 
 function getAppPlugins () {
@@ -53,8 +66,18 @@ function getAppPlugins () {
   return plugin
 }
 
+function getNavPages () {
+  return entryInfos.reduce((htmls, entryInfo) => {
+    if (entryInfo.entryExists || entryInfo.templateExists) {
+      htmls.push(entryInfo.pageName)
+    }
+    return htmls
+  }, [])
+}
+
 module.exports = {
   entry: getEntry(),
   htmlPlugins: getHtmlPlugins(),
-  appPlugins: getAppPlugins()
+  appPlugins: getAppPlugins(),
+  navPages: getNavPages()
 }
