@@ -26,9 +26,9 @@ function getHtmlPlugins () {
       filename: (function () {
         if (process.NODE_ENV === constant.DEVELOPMENT || !config.multiple) {
           return `${pageName}.html`
-        } else {
-          return `html/${pageName}.html`
         }
+
+        return `html/${pageName}.html`
       })(),
       minify: false
     }
