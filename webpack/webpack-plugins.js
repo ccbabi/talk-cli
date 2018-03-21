@@ -24,6 +24,11 @@ const plugins = [
     allChunks: true
   }),
   new webpack.optimize.CommonsChunkPlugin({
+    name: 'common',
+    chunks: helper.navPages
+  })
+  /*
+  new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     minChunks: function (module) {
       return module.context && module.context.indexOf('node_modules') !== -1
@@ -32,6 +37,7 @@ const plugins = [
   new webpack.optimize.CommonsChunkPlugin({
     name: 'manifest'
   })
+  */
 ]
 
 if (process.NODE_ENV !== constant.PRODUCTION) {
