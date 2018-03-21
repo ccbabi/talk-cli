@@ -40,7 +40,7 @@ function getHtmlPlugins () {
     if (!entryExists) {
       htmlOption.inject = false
     } else {
-      htmlOption.chunks = ['common', pageName]
+      htmlOption.chunks = ['maini', 'common', pageName]
     }
 
     plugins.push(new HtmlWebpackPlugin(htmlOption))
