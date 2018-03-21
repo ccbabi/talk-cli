@@ -6,6 +6,7 @@ const serveStatic = require('serve-static')
 const relative = require('../lib/relative')
 const config = require('../config')
 const opt = require('../config/option')
+const logger = require('../lib/logger')
 
 const mockDir = relative.cwd(config.mockDir)
 const staticDir = relative.cwd(config.staticDir)
@@ -13,6 +14,7 @@ const proxy = opt.get('proxy')
 
 exports.before = function (app) {
   if (!proxy && fs.existsSync(mockDir)) {
+    logger.info('Mock服务已开启')
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json())
     app.use(connectMockMiddleware(mockDir, {
@@ -22,6 +24,7 @@ exports.before = function (app) {
   }
 
   if (proxy && config.target) {
+    logger.info('联调模式已开启')
     app.use(config.context, httpProxyMiddleware({
       target: config.target,
       changeOrigin: config.changeOrigin,

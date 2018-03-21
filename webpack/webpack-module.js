@@ -39,6 +39,24 @@ module.exports = {
           name: 'images/[name]-[hash:7].[ext]'
         }
       }]
+    }, {
+      test: /\.(mp[34]||ogg|wav)$/,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'media/[name]-[hash:7].[ext]'
+        }
+      }]
+    }, {
+      test: /\.(eot|ttf|woff2?)$/,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'font/[name]-[hash:7].[ext]'
+        }
+      }]
     }
   ]
 }

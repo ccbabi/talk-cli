@@ -3,6 +3,7 @@ const plugins = require('../webpack/webpack-plugins')
 const helper = require('../webpack/webpack-helper')
 const module_ = require('../webpack/webpack-module')
 const other = require('../webpack/webpack-other')
+const config = require('../config')
 
 const cmdModules = relative.cmd('node_modules')
 const cwdModules = relative.cwd('node_modules')
@@ -18,7 +19,8 @@ module.exports = {
   resolve: {
     modules: [ cmdModules, cwdModules ],
     alias: {
-      '@': relative.cwd('src')
+      '@': relative.cwd('src'),
+      ...config.alias
     },
     extensions: ['.js', '.json', '.jsx']
   },
