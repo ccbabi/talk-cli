@@ -1,11 +1,23 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const relative = require('../lib/relative')
 
 const loadToExtMap = { css: /\.css$/, less: /\.less$/, stylus: /.styl$/ }
 const cssRule = []
 
 for (let [ loaderName, ext ] of Object.entries(loadToExtMap)) {
   const loaders = [{
-    loader: 'css-loader'
+    loader: 'css-loader',
+    options: {
+      importLoaders: 1
+    }
+  }, {
+    loader: 'postcss-loader',
+    options: {
+      config: {
+        path: relative.cmd('postcss.config.js')
+      },
+      sourceMap: true
+    }
   }]
 
   if (loaderName && loaderName !== 'css') {

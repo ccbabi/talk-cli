@@ -40,7 +40,7 @@ function getHtmlPlugins () {
     if (!entryExists) {
       htmlOption.inject = false
     } else {
-      htmlOption.chunks = [pageName]
+      htmlOption.chunks = ['manifest', 'vendor', pageName]
     }
 
     plugins.push(new HtmlWebpackPlugin(htmlOption))
