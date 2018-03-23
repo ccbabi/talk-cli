@@ -50,7 +50,7 @@ module.exports = {
       use: [{
         loader: 'ts-loader',
         options: {
-          context: relative.PATH_CWD,
+          context: relative.cwd(),
           configFile: relative.cmd('tsconfig.json')
         }
       }]

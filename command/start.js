@@ -8,7 +8,7 @@ const host = require('../lib/host')
 
 process.NODE_ENV = constant.DEVELOPMENT
 
-module.exports = (project, option) => {
+module.exports = option => {
   const webpackConfig = require('../webpack')
   const devOption = require('../webpack/webpack-server')
   const helper = require('../webpack/webpack-helper')

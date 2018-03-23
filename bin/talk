@@ -2,8 +2,8 @@
 
 const path = require('path')
 const program = require('commander')
-const relative = require('../lib/relative')
 const opt = require('../config/option')
+const relative = require('../lib/relative')
 
 program
   .command('init <模板名称> [项目名称]')
@@ -29,16 +29,17 @@ program
   .option('-P --page <page>', '启动浏览器并打开指定页面，默认为导航页', 'nav')
   .action((project, option) => {
     opt.set(option)
-    require('../command/start')(
-      path.basename(project && project !== '.' ? project : relative.PATH_CWD),
-      option
-    )
+    relative.setCwd(project && project !== '.' ? project : undefined)
+    require('../command/start')(option)
   })
 
 program
   .command('build [project]')
   .description('打包一个项目')
-  .action(require('../command/build'))
+  .action(project => {
+    relative.setCwd(project && project !== '.' ? project : undefined)
+    require('../command/build')()
+  })
 
 program
   .command('*', { isDefault: true })
