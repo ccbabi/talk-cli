@@ -22,7 +22,7 @@ module.exports = {
       '@': relative.cwd('src'),
       ...config.alias
     },
-    extensions: ['.js', '.json', '.jsx']
+    extensions: ['.ts', '.js', '.json', '.tsx', '.jsx']
   },
   resolveLoader: {
     modules: [ cwdModules, cmdModules ]

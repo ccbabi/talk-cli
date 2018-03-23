@@ -23,10 +23,23 @@ if (config.multiple) {
 }
 
 function genEntryInfo (dir) {
-  const template = relative.cwd(`${dir}/index.html`)
-  const entry = relative.cwd(`${dir}/index.js`)
-  const entryExists = fs.existsSync(entry)
-  const templateExists = fs.existsSync(template)
+  const templateExtensions = ['hbs', 'pug', 'html']
+  const entryExtensions = ['ts', 'js']
+
+  let template, templateExists, templateExtension
+  let entry, entryExists, entryExtension
+
+  while (!templateExists && templateExtensions.length) {
+    templateExtension = templateExtensions.shift()
+    template = relative.cwd(`${dir}/index.${templateExtension}`)
+    templateExists = fs.existsSync(template)
+  }
+
+  while (!entryExists && entryExtensions.length) {
+    entryExtension = entryExtensions.shift()
+    entry = relative.cwd(`${dir}/index.${entryExtension}`)
+    entryExists = fs.existsSync(entry)
+  }
 
   if (!exists) {
     exists = entryExists || templateExists

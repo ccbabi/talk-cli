@@ -17,7 +17,8 @@ const defaultConfig = {
   changeOrigin: true,
   static: '/static',
   staticDir: 'static',
-  alias: {}
+  alias: {},
+  minimize: true
 }
 
 let packageConfig
