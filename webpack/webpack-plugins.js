@@ -22,10 +22,6 @@ const plugins = [
     filename: 'css/[name].css',
     disable: process.NODE_ENV === constant.DEVELOPMENT,
     allChunks: true
-  }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'common',
-    chunks: helper.navPages
   })
   /*
   new webpack.optimize.CommonsChunkPlugin({
@@ -39,6 +35,16 @@ const plugins = [
   })
   */
 ]
+
+// 只有一个页面，不提取公共JS
+if (helper.navPages && helper.navPages.length > 1) {
+  plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      chunks: helper.navPages
+    })
+  )
+}
 
 if (process.NODE_ENV !== constant.PRODUCTION) {
   plugins.push(
