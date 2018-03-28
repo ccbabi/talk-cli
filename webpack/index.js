@@ -12,7 +12,8 @@ module.exports = {
   entry: helper.entry,
   output: {
     path: relative.cwd('dist'),
-    filename: 'js/[name].js'
+    filename: 'js/[name].js',
+    publicPath: '../'
   },
   module: module_,
   plugins,
