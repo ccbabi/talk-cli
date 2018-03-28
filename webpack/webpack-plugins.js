@@ -67,7 +67,11 @@ if (process.NODE_ENV !== constant.PRODUCTION) {
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
-        }
+        },
+        output: {
+          comments: false
+        },
+        ie8: true
       }),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.ProgressPlugin()
