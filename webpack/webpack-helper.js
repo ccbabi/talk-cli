@@ -30,7 +30,9 @@ function getHtmlPlugins () {
 
         return `html/${pageName}.html`
       })(),
-      minify: false
+      minify: {
+        removeComments: true
+      }
     }
 
     if (templateExists) {
