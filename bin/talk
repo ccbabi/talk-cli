@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const path = require('path')
 const program = require('commander')
 const opt = require('../config/option')
 const relative = require('../lib/relative')
+const version = require('../package.json').version
 
 program
+  .version(version)
   .command('init <模板名称> [项目名称]')
   .description('指定一个模板，用其初始化一个项目')
   .option('-t --type <type>', '指定项目类型', /^(?:html|wap)$/i, 'html')
