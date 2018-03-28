@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "51Talk前端开发脚手架",
   "main": "index.js",
   "scripts": {
