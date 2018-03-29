@@ -99,5 +99,6 @@ module.exports = {
         }
       }]
     }
-  ]
+  ],
+  noParse: content => /jquery|lodash/.test(content)
 }
