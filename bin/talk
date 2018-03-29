@@ -13,10 +13,10 @@ program
   .action(require('../command/init'))
   .on('--help', function () {
     console.log()
-    console.log('  示例:')
+    console.log('  例如:')
     console.log()
     console.log('    $ talk init static demo')
-    console.log('    $ talk init vue demo')
+    console.log('    $ talk init vue demo // 待更新')
     console.log()
   })
 
