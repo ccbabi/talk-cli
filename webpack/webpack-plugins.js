@@ -13,6 +13,7 @@ const assetsPath = relative.cwd('assets')
 const plugins = [
   ...helper.htmlPlugins,
   ...helper.appPlugins,
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.NODE_ENV)

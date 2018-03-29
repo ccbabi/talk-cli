@@ -23,7 +23,7 @@ if (config.multiple) {
 }
 
 function genEntryInfo (dir) {
-  const templateExtensions = ['hbs', 'pug', 'html']
+  const templateExtensions = ['ejs', 'hbs', 'pug', 'html']
   const entryExtensions = ['ts', 'js']
 
   let template, templateExists, templateExtension

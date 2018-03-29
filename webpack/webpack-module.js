@@ -42,6 +42,23 @@ module.exports = {
   rules: [
     ...cssRule,
     {
+      test: /\.html$/,
+      loader: 'html-loader'
+    }, {
+      test: /\.ejs$/,
+      loader: 'ejs-loader'
+    }, {
+      test: /\.pug$/,
+      use: [{
+        loader: 'pug-loader',
+        options: {
+          pretty: true
+        }
+      }]
+    }, {
+      test: /\.(hbs|jade)$/,
+      loader: 'handlebars-loader'
+    }, {
       test: /\.jsx?$/,
       loader: 'babel-loader',
       exclude: /node_modules/
@@ -81,17 +98,6 @@ module.exports = {
           name: 'font/[name]-[hash:7].[ext]'
         }
       }]
-    }, {
-      test: /\.pug$/,
-      use: [{
-        loader: 'pug-loader',
-        options: {
-          pretty: true
-        }
-      }]
-    }, {
-      test: /\.(hbs|jade)$/,
-      loader: 'handlebars-loader'
     }
   ]
 }

@@ -42,7 +42,7 @@ function getHtmlPlugins () {
     if (!entryExists) {
       htmlOption.inject = false
     } else {
-      htmlOption.chunks = ['maini', 'common', pageName]
+      htmlOption.chunks = ['main', 'common', pageName]
     }
 
     plugins.push(new HtmlWebpackPlugin(htmlOption))
