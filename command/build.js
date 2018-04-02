@@ -6,7 +6,7 @@ const constant = require('../config/constant')
 const logger = require('../lib/logger')
 const relative = require('../lib/relative')
 
-process.NODE_ENV = constant.PRODUCTION
+process.env.NODE_ENV = constant.PRODUCTION
 
 module.exports = () => {
   const webpackConfig = require('../webpack')

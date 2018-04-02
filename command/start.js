@@ -6,7 +6,7 @@ const config = require('../config')
 const logger = require('../lib/logger')
 const host = require('../lib/host')
 
-process.NODE_ENV = constant.DEVELOPMENT
+process.env.NODE_ENV = constant.DEVELOPMENT
 
 module.exports = option => {
   const webpackConfig = require('../webpack')

@@ -24,7 +24,7 @@ function getHtmlPlugins () {
     htmlOption = {
       title: pageName,
       filename: (function () {
-        if (process.NODE_ENV === constant.DEVELOPMENT || !config.multiple) {
+        if (process.env.NODE_ENV === constant.DEVELOPMENT || !config.multiple) {
           return `${pageName}.html`
         }
 
@@ -50,7 +50,7 @@ function getHtmlPlugins () {
     return plugins
   }, [])
 
-  if (process.NODE_ENV !== constant.PRODUCTION && config.multiple) {
+  if (process.env.NODE_ENV !== constant.PRODUCTION && config.multiple) {
     plugins.push(new HtmlWebpackPlugin({
       title: '51Talk - 开发导航页',
       filename: 'nav.html',

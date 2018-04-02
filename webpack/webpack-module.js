@@ -11,7 +11,7 @@ for (let [ loaderName, ext ] of Object.entries(loadToExtMap)) {
     loader: 'css-loader',
     options: {
       importLoaders: 1,
-      minimize: config.minimize && process.NODE_ENV === constant.PRODUCTION
+      minimize: config.minimize && process.env.NODE_ENV === constant.PRODUCTION
     }
   }, {
     loader: 'postcss-loader',
@@ -72,16 +72,39 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(png|jpe?g|gif)$/,
+      test: /\.(png|jpe?g|gif|svg)$/,
       use: [{
         loader: 'url-loader',
         options: {
           limit: 10000,
           name: 'images/[name]-[hash:7].[ext]'
         }
+      }, {
+        loader: 'img-loader',
+        options: {
+          enabled: process.env.NODE_ENV === constant.PRODUCTION,
+          gifsicle: {
+            interlaced: false
+          },
+          mozjpeg: {
+            progressive: true,
+            arithmetic: false
+          },
+          optipng: false, // disabled
+          pngquant: {
+            floyd: 0.5,
+            speed: 2
+          },
+          svgo: {
+            plugins: [
+              { removeTitle: true },
+              { convertPathData: false }
+            ]
+          }
+        }
       }]
     }, {
-      test: /\.(mp[34]||ogg|wav)$/,
+      test: /\.(mp[34]|ogg|wav)$/,
       use: [{
         loader: 'url-loader',
         options: {

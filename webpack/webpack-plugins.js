@@ -16,12 +16,12 @@ const plugins = [
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(process.NODE_ENV)
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     }
   }),
   new ExtractTextPlugin({
     filename: 'css/[name].css',
-    disable: process.NODE_ENV === constant.DEVELOPMENT,
+    disable: process.env.NODE_ENV === constant.DEVELOPMENT,
     allChunks: true
   })
   /*
@@ -47,7 +47,7 @@ if (helper.navPages && helper.navPages.length > 1) {
   )
 }
 
-if (process.NODE_ENV !== constant.PRODUCTION) {
+if (process.env.NODE_ENV !== constant.PRODUCTION) {
   plugins.push(
     new ReloadPlugin(),
     new webpack.HotModuleReplacementPlugin(),
