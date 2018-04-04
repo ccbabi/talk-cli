@@ -1,4 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const babelPresetEnv = require('babel-preset-env')
+const babelPresetReact = require('babel-preset-react')
 const relative = require('../lib/relative')
 const config = require('../config')
 const constant = require('../config/constant')
@@ -60,8 +62,16 @@ module.exports = {
       loader: 'handlebars-loader'
     }, {
       test: /\.jsx?$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            babelPresetEnv,
+            babelPresetReact
+          ]
+        }
+      },
+      include: relative.cwd('src')
     }, {
       test: /\.tsx?$/,
       use: [{
