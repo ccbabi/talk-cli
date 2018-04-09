@@ -4,7 +4,9 @@
   "description": "51Talk前端开发脚手架",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "npm publish",
+    "postpublish": "git push origin master --tags"
   },
   "repository": {
     "type": "git",
