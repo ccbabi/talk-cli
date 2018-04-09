@@ -82,7 +82,38 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(png|jpe?g|gif|svg)$/,
+      test: /-file\.(png|jpe?g|gif|svg)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: 'images/[name]-[hash:7].[ext]'
+        }
+      }, {
+        loader: 'img-loader',
+        options: {
+          enabled: process.env.NODE_ENV === constant.PRODUCTION,
+          gifsicle: {
+            interlaced: false
+          },
+          mozjpeg: {
+            progressive: true,
+            arithmetic: false
+          },
+          optipng: false, // disabled
+          pngquant: {
+            floyd: 0.5,
+            speed: 2
+          },
+          svgo: {
+            plugins: [
+              { removeTitle: true },
+              { convertPathData: false }
+            ]
+          }
+        }
+      }]
+    }, {
+      test: filename => /\.(png|jpe?g|gif|svg)$/.test(filename) && !/-file\.(png|jpe?g|gif|svg)$/.test(filename),
       use: [{
         loader: 'url-loader',
         options: {
@@ -116,18 +147,16 @@ module.exports = {
     }, {
       test: /\.(mp[34]|ogg|wav)$/,
       use: [{
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
-          limit: 10000,
           name: 'media/[name]-[hash:7].[ext]'
         }
       }]
     }, {
       test: /\.(eot|ttf|woff2?)$/,
       use: [{
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
-          limit: 10000,
           name: 'font/[name]-[hash:7].[ext]'
         }
       }]
