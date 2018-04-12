@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const rimraf = require('rimraf')
 const Pea = require('pea-js').default
 const constant = require('../config/constant')
-const logger = require('../lib/logger')
 const relative = require('../lib/relative')
 
 process.env.NODE_ENV = constant.PRODUCTION
@@ -17,10 +16,10 @@ module.exports = option => {
   ctrl.use(next => {
     if (!distExists) return next()
 
-    logger.info(`正在删除 ${distPath}`)
+    console.log(`正在删除 ${distPath}..`)
     rimraf(distPath, next)
   }).use(() => {
-    distExists && logger.info(`已删除 ${distPath}`)
+    distExists && console.log(`已删除 ${distPath}.`)
 
     const compiler = webpack(webpackConfig)
     const pattern = option.watch ? 'watch' : 'run'
@@ -46,7 +45,7 @@ module.exports = option => {
         process.exit(1)
       }
 
-      logger.success('打包完成')
+      console.log('^_^ 打包完成啦!')
     })
   }).start()
 }
