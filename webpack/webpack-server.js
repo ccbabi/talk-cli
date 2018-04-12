@@ -14,6 +14,7 @@ module.exports = {
   },
   noInfo: config.noInfo,
   https: config.https,
-  index: 'nav.html',
+  index: config.multiple ? 'nav.html' : 'index.html',
+  historyApiFallback: true,
   ...hooks
 }

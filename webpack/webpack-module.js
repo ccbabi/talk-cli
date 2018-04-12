@@ -1,6 +1,8 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const babelPresetEnv = require('babel-preset-env')
 const babelPresetReact = require('babel-preset-react')
+const babelPresetStage = require('babel-preset-stage-3')
+const babelPluginTransformVueJsx = require('babel-plugin-transform-vue-jsx')
+const genLoaders = require('./webpack-loader')
 const relative = require('../lib/relative')
 const config = require('../config')
 const constant = require('../config/constant')
@@ -8,42 +10,45 @@ const constant = require('../config/constant')
 const loadToExtMap = { css: /\.css$/, less: /\.less$/, stylus: /.styl$/ }
 const cssRule = []
 
-for (let [ loaderName, ext ] of Object.entries(loadToExtMap)) {
-  const loaders = [{
-    loader: 'css-loader',
-    options: {
-      importLoaders: 1,
-      minimize: config.minimize && process.env.NODE_ENV === constant.PRODUCTION
-    }
-  }, {
-    loader: 'postcss-loader',
-    options: {
-      config: {
-        path: relative.cmd('postcss.config.js')
-      },
-      sourceMap: true
-    }
-  }]
-
-  if (loaderName && loaderName !== 'css') {
-    loaders.push({
-      loader: `${loaderName}-loader`
-    })
-  }
-
+for (let [ loaderName, reExt ] of Object.entries(loadToExtMap)) {
   cssRule.push({
-    test: ext,
-    use: ExtractTextPlugin.extract({
-      use: loaders,
-      fallback: 'style-loader'
-    })
+    test: reExt,
+    use: genLoaders(loaderName)
   })
+}
+
+const presets = [ [ babelPresetEnv, {
+  targets: {
+    browsers: config.browsers
+  }
+} ], babelPresetStage ]
+
+const plugins = []
+
+if (config.multiple) {
+  presets.push(babelPresetReact)
+} else {
+  plugins.push(babelPluginTransformVueJsx)
 }
 
 module.exports = {
   rules: [
     ...cssRule,
     {
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: {
+        loaders: {
+          css: genLoaders('css', true),
+          less: genLoaders('less', true),
+          stylus: genLoaders('stylus', true)
+        },
+        transformToRequire: {
+          audio: 'src',
+          video: 'src'
+        }
+      }
+    }, {
       test: /\.html$/,
       loader: 'html-loader'
     }, {
@@ -66,10 +71,8 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          presets: [
-            babelPresetEnv,
-            babelPresetReact
-          ]
+          presets,
+          plugins
         }
       },
       include: relative.cwd('src')

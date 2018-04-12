@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path: relative.cwd('dist'),
     filename: 'js/[name].js',
-    publicPath: '../'
+    publicPath: config.multiple ? '../' : './'
   },
   module: module_,
   plugins,
@@ -23,7 +23,7 @@ module.exports = {
       '@': relative.cwd('src'),
       ...config.alias
     },
-    extensions: ['.ts', '.js', '.json', '.tsx', '.jsx']
+    extensions: ['.vue', '.ts', '.js', '.json', '.tsx', '.jsx']
   },
   resolveLoader: {
     modules: [ cwdModules, cmdModules ]

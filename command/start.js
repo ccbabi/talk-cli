@@ -1,4 +1,4 @@
-const Webpack = require('webpack')
+const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
 const opn = require('opn')
 const constant = require('../config/constant')
@@ -15,11 +15,11 @@ module.exports = option => {
 
   const pageName = option.page
 
-  if (pageName !== 'nav' && !~helper.navPages.indexOf(pageName)) {
+  if (config.multiple && pageName !== 'nav' && !~helper.navPages.indexOf(pageName)) {
     logger.error('Oops, 打开的页面不存在！')
     process.exit(1)
   }
-  const compiler = Webpack(webpackConfig)
+  const compiler = webpack(webpackConfig)
   const server = new WebpackDevServer(compiler, devOption)
   const origin = `${config.https ? 'https' : 'http'}://${host[0]}:${config.port}`
   const pathname = pageName !== 'nav' ? `/${pageName}.html` : ''
@@ -28,6 +28,10 @@ module.exports = option => {
     logger.success(`服务器启动在:`)
     host.forEach(h => void logger.success(`${config.https ? 'https' : 'http'}://${h}:${config.port}`));
 
-    (option.open || option.page !== 'nav') && opn(origin + pathname)
+    if (config.multiple) {
+      (option.open || option.page !== 'nav') && opn(origin + pathname)
+    } else {
+      (option.open) && opn(origin)
+    }
   })
 }

@@ -18,7 +18,12 @@ const defaultConfig = {
   static: '/static',
   staticDir: 'static',
   alias: {},
-  minimize: true
+  minimize: true,
+  browsers: [
+    '> 1%',
+    'last 2 versions',
+    'ie >= 8'
+  ]
 }
 
 let packageConfig

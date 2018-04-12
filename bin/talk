@@ -35,9 +35,10 @@ program
 program
   .command('build [project]')
   .description('打包一个项目')
-  .action(project => {
+  .option('-w --watch', '监听模式打包')
+  .action((project, option) => {
     relative.setCwd(project && project !== '.' ? project : undefined)
-    require('../command/build')()
+    require('../command/build')(option)
   })
 
 program

@@ -9,7 +9,22 @@ const relative = require('../lib/relative')
 function getEntry () {
   return entryInfos.reduce((webpackEntry, entryInfo) => {
     const { entryExists, pageName, entry } = entryInfo
-    if (entryExists) webpackEntry[pageName] = entry
+    if (entryExists) {
+      const newEntry = [ entry ]
+      if (!config.multiple) {
+        newEntry.unshift('babel-polyfill')
+        if (process.env.NODE_ENV === constant.DEVELOPMENT) {
+          newEntry.unshift(
+            'webpack/hot/only-dev-server',
+            `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`,
+          )
+        }
+        if (process.env.NODE_ENV === constant.PRODUCTION) {
+          // newEntry.unshift(relative.cmd('lib/public-path'))
+        }
+      }
+      webpackEntry[pageName] = newEntry
+    }
     return webpackEntry
   }, {})
 }
@@ -43,6 +58,11 @@ function getHtmlPlugins () {
       htmlOption.inject = false
     } else {
       htmlOption.chunks = ['main', 'common', pageName]
+    }
+
+    if (!config.multiple) {
+      htmlOption.inject = true
+      delete htmlOption.chunks
     }
 
     plugins.push(new HtmlWebpackPlugin(htmlOption))

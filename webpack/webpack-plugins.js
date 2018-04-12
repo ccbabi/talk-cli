@@ -23,22 +23,27 @@ const plugins = [
     filename: 'css/[name].css',
     disable: process.env.NODE_ENV === constant.DEVELOPMENT,
     allChunks: true
-  })
-  /*
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: function (module) {
-      return module.context && module.context.indexOf('node_modules') !== -1
-    }
   }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'manifest'
-  })
-  */
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.optimize.ModuleConcatenationPlugin()
 ]
 
+if (!config.multiple) {
+  plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        return module.context && module.context.indexOf('node_modules') !== -1
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest'
+    })
+  )
+}
+
 // 只有一个页面，不提取公共JS
-if (helper.navPages && helper.navPages.length > 1) {
+if (config.multiple && helper.navPages && helper.navPages.length > 1) {
   plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
@@ -49,7 +54,6 @@ if (helper.navPages && helper.navPages.length > 1) {
 
 if (process.env.NODE_ENV !== constant.PRODUCTION) {
   plugins.push(
-    new ReloadPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
@@ -62,20 +66,16 @@ if (process.env.NODE_ENV !== constant.PRODUCTION) {
       })
     )
   }
+  if (config.multiple) {
+    plugins.push(new ReloadPlugin())
+  }
 } else {
+  plugins.push(new webpack.ProgressPlugin())
+
   if (config.uglify) {
+    console.log('压缩')
     plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        },
-        output: {
-          comments: false
-        },
-        ie8: true
-      }),
-      new webpack.optimize.OccurrenceOrderPlugin(),
-      new webpack.ProgressPlugin()
+      new webpack.optimize.UglifyJsPlugin()
     )
   }
 }

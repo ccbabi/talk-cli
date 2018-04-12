@@ -1,5 +1,5 @@
 const fs = require('fs')
-const Webpack = require('webpack')
+const webpack = require('webpack')
 const rimraf = require('rimraf')
 const Pea = require('pea-js').default
 const constant = require('../config/constant')
@@ -8,7 +8,7 @@ const relative = require('../lib/relative')
 
 process.env.NODE_ENV = constant.PRODUCTION
 
-module.exports = () => {
+module.exports = option => {
   const webpackConfig = require('../webpack')
   const distPath = relative.cwd('dist')
   const distExists = fs.existsSync(distPath)
@@ -21,17 +21,31 @@ module.exports = () => {
     rimraf(distPath, next)
   }).use(() => {
     distExists && logger.info(`已删除 ${distPath}`)
-    Webpack(webpackConfig, (err, stats) => {
+
+    const compiler = webpack(webpackConfig)
+    const pattern = option.watch ? 'watch' : 'run'
+    compiler[pattern]((err, stats) => {
       if (err) {
+        console.error(err.stack || err)
         if (err.details) {
-          return logger.error(err.details)
+          console.error(err.details)
         }
-        return logger.error(err.stack || err.message || err)
+        process.exit(1)
       }
+
+      const info = stats.toJson()
+
       if (stats.hasErrors()) {
-        const info = stats.toJson()
-        return logger.error(info.errors)
+        console.error(info.errors)
+        console.error(info.errorDetails)
+        process.exit(1)
       }
+
+      if (stats.hasWarnings()) {
+        console.warn(info.warnings)
+        process.exit(1)
+      }
+
       logger.success('打包完成')
     })
   }).start()

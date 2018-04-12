@@ -1,5 +1,7 @@
+const config = require('./config')
+
 module.exports = {
   plugins: [
-    require('autoprefixer')
+    require('autoprefixer')({ browsers: config.browsers })
   ]
 }
