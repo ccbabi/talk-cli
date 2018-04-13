@@ -12,7 +12,7 @@ function getEntry () {
     if (entryExists) {
       const newEntry = [ entry ]
       if (!config.multiple) {
-        newEntry.unshift('babel-polyfill')
+        // newEntry.unshift('babel-polyfill')
         if (process.env.NODE_ENV === constant.DEVELOPMENT) {
           newEntry.unshift(
             'webpack/hot/only-dev-server',

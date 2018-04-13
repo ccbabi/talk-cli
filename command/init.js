@@ -56,7 +56,7 @@ module.exports = (template, project, option) => {
     const spinner = ora('正在安装依赖...\n').start()
     const stream = execa(
       'npm',
-      ['install', '--production', '--registry=https://registry.npm.taobao.org'],
+      ['install', '--registry=https://registry.npm.taobao.org'],
       { cwd: relative.cwd(project) }
     ).stdout
 

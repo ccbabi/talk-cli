@@ -15,12 +15,8 @@ module.exports = option => {
 
   ctrl.use(next => {
     if (!distExists) return next()
-
-    console.log(`正在删除 ${distPath}..`)
     rimraf(distPath, next)
   }).use(() => {
-    distExists && console.log(`已删除 ${distPath}.`)
-
     const compiler = webpack(webpackConfig)
     const pattern = option.watch ? 'watch' : 'run'
     compiler[pattern]((err, stats) => {
@@ -45,7 +41,7 @@ module.exports = option => {
         process.exit(1)
       }
 
-      console.log('^_^ 打包完成啦!')
+      console.log('=^_^=')
     })
   }).start()
 }

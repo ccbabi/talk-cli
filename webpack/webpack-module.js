@@ -2,6 +2,7 @@ const babelPresetEnv = require('babel-preset-env')
 const babelPresetReact = require('babel-preset-react')
 const babelPresetStage = require('babel-preset-stage-3')
 const babelPluginTransformVueJsx = require('babel-plugin-transform-vue-jsx')
+const babelPluginTransformRuntime = require('babel-plugin-transform-runtime')
 const genLoaders = require('./webpack-loader')
 const relative = require('../lib/relative')
 const config = require('../config')
@@ -23,7 +24,7 @@ const presets = [ [ babelPresetEnv, {
   }
 } ], babelPresetStage ]
 
-const plugins = []
+const plugins = [ babelPluginTransformRuntime ]
 
 if (config.multiple) {
   presets.push(babelPresetReact)
