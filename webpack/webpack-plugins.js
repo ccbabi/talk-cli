@@ -8,7 +8,7 @@ const config = require('../config')
 const constant = require('../config/constant')
 const relative = require('../lib/relative')
 
-const assetsPath = relative.cwd('assets')
+const assetsPath = relative.cwd('src/assets')
 
 const plugins = [
   ...helper.htmlPlugins,
@@ -73,7 +73,6 @@ if (process.env.NODE_ENV !== constant.PRODUCTION) {
   plugins.push(new webpack.ProgressPlugin())
 
   if (config.uglify) {
-    console.log('压缩')
     plugins.push(
       new webpack.optimize.UglifyJsPlugin()
     )

@@ -37,6 +37,7 @@ module.exports = {
     {
       test: /\.vue$/,
       loader: 'vue-loader',
+      exclude: /node_modules/,
       options: {
         loaders: {
           css: genLoaders('css', true),
@@ -75,7 +76,7 @@ module.exports = {
           plugins
         }
       },
-      include: relative.cwd('src')
+      exclude: /node_modules/
     }, {
       test: /\.tsx?$/,
       use: [{

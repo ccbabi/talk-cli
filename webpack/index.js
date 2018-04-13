@@ -26,7 +26,7 @@ module.exports = {
     extensions: ['.vue', '.ts', '.js', '.json', '.tsx', '.jsx']
   },
   resolveLoader: {
-    modules: [ cwdModules, cmdModules ]
+    modules: [ cmdModules, cwdModules ]
   },
   ...other
 }
