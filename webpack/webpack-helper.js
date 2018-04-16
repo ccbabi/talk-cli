@@ -16,7 +16,7 @@ function getEntry () {
         if (process.env.NODE_ENV === constant.DEVELOPMENT) {
           newEntry.unshift(
             'webpack/hot/only-dev-server',
-            `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`,
+            `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`
           )
         }
         if (process.env.NODE_ENV === constant.PRODUCTION) {

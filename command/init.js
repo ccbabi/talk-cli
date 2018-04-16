@@ -8,7 +8,8 @@ const logger = require('../lib/logger')
 const relative = require('../lib/relative')
 
 const templates = {
-  'static': 'ccbabi/talk-template-static'
+  'static': 'ccbabi/talk-template-static',
+  'vue': 'ccbabi/talk-template-vue'
 }
 
 module.exports = (template, project, option) => {
@@ -40,9 +41,8 @@ module.exports = (template, project, option) => {
   })
 
   function downTemplate () {
-    const spinner = ora('正在初始化模板...\n').start()
+    ora('正在初始化模板...\n').start()
     downGitRepo(templates[template], relative.cwd(project), { clone: option.clone }, err => {
-      spinner.stop()
       if (err) {
         logger.error(err)
         process.exit(1)

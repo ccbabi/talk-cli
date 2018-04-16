@@ -19,6 +19,7 @@ module.exports = option => {
     logger.error('Oops, 打开的页面不存在！')
     process.exit(1)
   }
+
   const compiler = webpack(webpackConfig)
   const server = new WebpackDevServer(compiler, devOption)
   const origin = `${config.https ? 'https' : 'http'}://${host[0]}:${config.port}`
@@ -26,7 +27,7 @@ module.exports = option => {
 
   server.listen(config.port, '0.0.0.0', () => {
     logger.success(`服务器启动在:`)
-    host.forEach(h => void logger.success(`${config.https ? 'https' : 'http'}://${h}:${config.port}`));
+    host.forEach(h => void logger.success(`${config.https ? 'https' : 'http'}://${h}:${config.port}`))
 
     if (config.multiple) {
       (option.open || option.page !== 'nav') && opn(origin + pathname)
