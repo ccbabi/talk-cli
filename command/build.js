@@ -28,15 +28,13 @@ module.exports = option => {
       }
 
       const info = stats.toJson()
-
       if (stats.hasErrors()) {
-        console.error(info.errors)
-        console.error(info.errorDetails)
+        console.error(info.errors.join(''))
         process.exit(1)
       }
 
       if (stats.hasWarnings()) {
-        console.warn(info.warnings)
+        console.warn(info.warnings.join(''))
         process.exit(1)
       }
       if (option.watch) {
@@ -45,6 +43,7 @@ module.exports = option => {
         console.log('打包完成')
       }
     }
+
     if (option.watch) {
       compiler.watch({}, handler)
     } else {
