@@ -38,7 +38,7 @@ module.exports = {
     {
       test: /\.vue$/,
       loader: 'vue-loader',
-      exclude: /node_modules/,
+      include: relative.cwd('src'),
       options: {
         loaders: {
           css: genLoaders('css', true),
@@ -77,7 +77,7 @@ module.exports = {
           plugins
         }
       },
-      exclude: /node_modules/
+      include: relative.cwd('src')
     }, {
       test: /\.tsx?$/,
       use: [{
@@ -86,7 +86,8 @@ module.exports = {
           context: relative.cwd(),
           configFile: relative.cmd('tsconfig.json')
         }
-      }]
+      }],
+      include: relative.cwd('src')
     }, {
       test: /-file\.(png|jpe?g|gif|svg)$/,
       use: [{
@@ -168,5 +169,5 @@ module.exports = {
       }]
     }
   ],
-  noParse: content => /jquery|lodash/.test(content)
+  noParse: content => /(?:jquery|vue|lodash)(?:\.min)?\.js$/.test(content)
 }
