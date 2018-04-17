@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "51Talk前端开发脚手架",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,6 @@
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
