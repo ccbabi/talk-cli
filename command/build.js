@@ -18,8 +18,7 @@ module.exports = option => {
     rimraf(distPath, next)
   }).use(() => {
     const compiler = webpack(webpackConfig)
-    const pattern = option.watch ? 'watch' : 'run'
-    compiler[pattern]((err, stats) => {
+    const handler = (err, stats) => {
       if (err) {
         console.error(err.stack || err)
         if (err.details) {
@@ -40,8 +39,16 @@ module.exports = option => {
         console.warn(info.warnings)
         process.exit(1)
       }
-
-      console.log('=^_^=')
-    })
+      if (option.watch) {
+        console.log(`${new Date().toLocaleString()}: 打包完成`)
+      } else {
+        console.log('打包完成')
+      }
+    }
+    if (option.watch) {
+      compiler.watch({}, handler)
+    } else {
+      compiler.run(handler)
+    }
   }).start()
 }
