@@ -1,7 +1,7 @@
 {
   "name": "talk-cli",
-  "version": "1.5.0",
-  "description": "51Talk前端开发脚手架",
+  "version": "1.5.1",
+  "description": "51talk",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
