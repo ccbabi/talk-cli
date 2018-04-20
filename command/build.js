@@ -38,9 +38,9 @@ module.exports = option => {
         process.exit(1)
       }
       if (option.watch) {
-        console.log(`[${new Date().toLocaleString()}] 打包完成`)
+        console.log(`[${new Date().toLocaleString()}] 编译完成`)
       } else {
-        console.log('打包完成')
+        console.log('编译完成')
       }
     }
 
