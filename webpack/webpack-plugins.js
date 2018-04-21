@@ -74,7 +74,19 @@ if (process.env.NODE_ENV !== constant.PRODUCTION) {
 
   if (config.uglify) {
     plugins.push(
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          drop_console: true,
+          collapse_vars: true,
+          reduce_vars: true
+        },
+        output: {
+          beautify: false,
+          comments: false
+        },
+        ie8: config.multiple
+      })
     )
   }
 }
