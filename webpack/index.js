@@ -19,7 +19,6 @@ module.exports = {
   plugins,
   resolve: {
     modules: [ cmdModules, cwdModules ],
-    // mainFields: ['main'],
     alias: {
       '@': relative.cwd('src'),
       ...config.alias

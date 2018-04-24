@@ -21,7 +21,8 @@ for (let [ loaderName, reExt ] of Object.entries(loadToExtMap)) {
 const presets = [ [ babelPresetEnv, {
   targets: {
     browsers: config.browsers
-  }
+  },
+  modules: false
 } ], babelPresetStage ]
 
 const plugins = [ babelPluginTransformRuntime ]
