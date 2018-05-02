@@ -31,12 +31,15 @@ program
       open: option.open,
       proxy: option.proxy,
       https: option.https,
-      port: option.port,
       __projectPath: !projectName || projectName === '.'
         ? '.'
         : projectName,
       __env: 'development'
     })
+
+    if (option.port) {
+      setConfig({ port: option.port })
+    }
 
     require('../command/start')()
   })
