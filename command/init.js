@@ -4,8 +4,6 @@ const downGitRepo = require('download-git-repo')
 const execa = require('execa')
 const getStream = require('get-stream')
 const inquirer = require('inquirer')
-const logger = require('../lib/logger')
-const relative = require('../lib/relative')
 
 const templates = {
   'static': 'ccbabi/talk-template-static',
@@ -13,6 +11,8 @@ const templates = {
 }
 
 module.exports = (template, project, option) => {
+  const logger = require('../lib/logger')
+  const relative = require('../lib/relative')
   let message
 
   if (!templates[template]) {

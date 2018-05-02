@@ -2,16 +2,15 @@ const fs = require('fs')
 const webpack = require('webpack')
 const rimraf = require('rimraf')
 const Pea = require('pea-js').default
-const constant = require('../config/constant')
-const relative = require('../lib/relative')
 
-process.env.NODE_ENV = constant.PRODUCTION
-
-module.exports = option => {
+module.exports = () => {
+  const relative = require('../lib/relative')
   const webpackConfig = require('../webpack')
+  const { getConfig } = require('../config')
   const distPath = relative.cwd('dist')
   const distExists = fs.existsSync(distPath)
   const ctrl = new Pea()
+  const config = getConfig()
 
   ctrl.use(next => {
     if (!distExists) return next()
@@ -37,14 +36,14 @@ module.exports = option => {
         console.warn(info.warnings.join(''))
         process.exit(1)
       }
-      if (option.watch) {
+      if (config.watch) {
         console.log(`[${new Date().toLocaleString()}] 编译完成`)
       } else {
         console.log('编译完成')
       }
     }
 
-    if (option.watch) {
+    if (config.watch) {
       compiler.watch({
         ignored: /node_modules/
       }, handler)

@@ -6,29 +6,27 @@ const httpProxyMiddleware = require('http-proxy-middleware')
 const serveStatic = require('serve-static')
 const isHttpUrl = require('is-http-url')
 const relative = require('../lib/relative')
-const config = require('../config')
-const opt = require('../config/option')
+const { getConfig } = require('../config')
 const logger = require('../lib/logger')
 
-const mockDir = relative.cwd(config.mockDir)
-const staticDir = relative.cwd(config.staticDir)
-const proxy = opt.get('proxy')
+const config = getConfig()
+const mockDir = relative.cwd(config.__projectPath, config.mockDir)
+const staticDir = relative.cwd(config.__projectPath, config.staticDir)
 const reIP4 = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
+let up
 
 exports.before = function (app) {
-  if (!proxy && fs.existsSync(mockDir)) {
+  if (!config.proxy && fs.existsSync(mockDir)) {
     logger.info('Mock服务已开启')
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json())
     app.use(connectMockMiddleware(mockDir, {
-      prefix: config.context,
-      callback: config.callback
+      prefix: config.mockContext,
+      callback: config.mockCallback
     }))
   }
 
-  if (proxy && config.target) {
-    let up
-
+  if (config.proxy && config.target) {
     if (!/^https?:/.test(config.target)) {
       config.target = 'http://' + config.target
     }
@@ -51,6 +49,6 @@ exports.before = function (app) {
 
 exports.after = function (app) {
   if (fs.existsSync(staticDir)) {
-    app.use(config.static, serveStatic(staticDir))
+    app.use(config.staticContext, serveStatic(staticDir))
   }
 }

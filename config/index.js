@@ -1,9 +1,8 @@
 const defaultConfig = require('./default')
-const fileConfig = require('./file')
+const getFileConfig = require('./file')
 
 let config = {
-  ...defaultConfig,
-  ...fileConfig
+  ...defaultConfig
 }
 
 module.exports = {
@@ -12,6 +11,10 @@ module.exports = {
   },
 
   setConfig (cfg) {
-    config = { ...config, ...cfg }
+    config = {
+      ...config,
+      ...getFileConfig(cfg.__projectPath),
+      ...cfg
+    }
   }
 }

@@ -1,14 +1,15 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const relative = require('../lib/relative')
-const config = require('../config')
-const constant = require('../config/constant')
+const { getConfig } = require('../config')
+
+const config = getConfig()
 
 module.exports = function (loaderName, isVue) {
   const loaders = [{
     loader: 'css-loader',
     options: {
       importLoaders: 1,
-      minimize: config.minimize && process.env.NODE_ENV === constant.PRODUCTION
+      minimize: config.compress
     }
   }, {
     loader: 'postcss-loader',

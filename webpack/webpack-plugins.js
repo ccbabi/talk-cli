@@ -1,18 +1,19 @@
 const fs = require('fs')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const ReloadPlugin = require('reload-html-webpack-plugin')
+// const ReloadPlugin = require('reload-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const isPlainObject = require('is-plain-object')
 const helper = require('./webpack-helper')
-const config = require('../config')
-const constant = require('../config/constant')
+const { getConfig } = require('../config')
 const relative = require('../lib/relative')
 
-const assetsPath = relative.cwd('src/assets')
+const config = getConfig()
+const assetsPath = relative.cwd(config.__projectPath + 'src/assets')
+const entries = Object.keys(helper.entry)
 
 const plugins = [
   ...helper.htmlPlugins,
-  ...helper.appPlugins,
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   new webpack.DefinePlugin({
     'process.env': {
@@ -21,42 +22,50 @@ const plugins = [
   }),
   new ExtractTextPlugin({
     filename: 'css/[name].css',
-    disable: process.env.NODE_ENV === constant.DEVELOPMENT,
+    disable: config.__env === 'development',
     allChunks: true
   }),
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.optimize.ModuleConcatenationPlugin()
 ]
 
-if (!config.multiple) {
-  plugins.push(
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module) {
-        return module.context && module.context.indexOf('node_modules') !== -1
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest'
-    })
-  )
-}
-
-// 只有一个页面，不提取公共JS
-if (config.multiple && helper.navPages && helper.navPages.length > 1) {
+if (entries.length > 1) {
   plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
+      minChunks: 2,
       chunks: helper.navPages
     })
   )
 }
 
-if (process.env.NODE_ENV !== constant.PRODUCTION) {
+if (config.base && config.base.length) {
+  plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'base',
+      chunks: [entries.length > 1 ? 'common' : entries[0], 'base']
+    })
+  )
+}
+
+if (isPlainObject(config.provide)) {
+  plugins.push(new webpack.ProvidePlugin(config.provide))
+}
+
+if (isPlainObject(config.define)) {
+  plugins.push(new webpack.DefinePlugin(config.define))
+}
+
+  // if (config.multiple) {
+  //   plugins.push(new ReloadPlugin())
+  // }
+
+if (config.__env === 'development') {
   plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
+
   if (fs.existsSync(assetsPath)) {
     plugins.push(
       new CopyWebpackPlugin({
@@ -66,13 +75,12 @@ if (process.env.NODE_ENV !== constant.PRODUCTION) {
       })
     )
   }
-  if (config.multiple) {
-    plugins.push(new ReloadPlugin())
-  }
-} else {
+}
+
+if (config.__env === 'production') {
   plugins.push(new webpack.ProgressPlugin())
 
-  if (config.uglify) {
+  if (config.compress) {
     plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -85,7 +93,7 @@ if (process.env.NODE_ENV !== constant.PRODUCTION) {
           beautify: false,
           comments: false
         },
-        ie8: config.multiple
+        ie8: true
       })
     )
   }

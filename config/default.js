@@ -9,6 +9,7 @@ module.exports = {
   'define': {},
   'alias': {},
   'externals': {},
+  'base': [],
   'compress': true,
   'noInfo': true,
   'mockDir': 'mock',
@@ -17,6 +18,9 @@ module.exports = {
   'staticDir': 'static',
   'staticContext': '/static',
   'copyDir': 'src/assets',
+  'publicPath': '../',
+  'jsx': 'React.createElement',
+  'vue': false,
   'browserslist': [
     'last 2 versions',
     'ie >= 8'

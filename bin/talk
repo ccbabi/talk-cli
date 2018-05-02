@@ -23,15 +23,17 @@ program
   .description('开发一个项目')
   .option('-o --open', '打开浏览器')
   .option('-p --proxy', '开启联调模式')
-  .option('-h --https', '开启https服务')
+  .option('-H --https', '开启https服务')
   .action((projectName, option) => {
+    process.env.NODE_ENV = 'development'
     setConfig({
-      projectName: !projectName || projectName === '.'
-        ? '.'
-        : projectName,
       open: option.open,
       proxy: option.proxy,
-      https: option.https
+      https: option.https,
+      __projectPath: !projectName || projectName === '.'
+        ? '.'
+        : projectName,
+      __env: 'development'
     })
 
     require('../command/start')()
@@ -42,11 +44,13 @@ program
   .description('打包一个项目')
   .option('-w --watch', '监听模式打包')
   .action((projectName, option) => {
+    process.env.NODE_ENV = 'production'
     setConfig({
-      projectName: !projectName || projectName === '.'
+      watch: option.watch,
+      __projectPath: !projectName || projectName === '.'
         ? '.'
         : projectName,
-      watch: option.watch
+      __env: 'production'
     })
 
     require('../command/build')()

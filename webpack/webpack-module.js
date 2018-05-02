@@ -1,3 +1,4 @@
+const fs = require('fs')
 const babelPresetEnv = require('babel-preset-env')
 const babelPresetReact = require('babel-preset-react')
 const babelPresetStage = require('babel-preset-stage-3')
@@ -5,10 +6,11 @@ const babelPluginTransformVueJsx = require('babel-plugin-transform-vue-jsx')
 const babelPluginTransformRuntime = require('babel-plugin-transform-runtime')
 const genLoaders = require('./webpack-loader')
 const relative = require('../lib/relative')
-const config = require('../config')
-const constant = require('../config/constant')
+const { getConfig } = require('../config')
 
+const config = getConfig()
 const loadToExtMap = { css: /\.css$/, less: /\.less$/, stylus: /.styl$/ }
+const viewsPath = relative.cwd(config.__projectPath, 'src', 'views')
 const cssRule = []
 
 for (let [ loaderName, reExt ] of Object.entries(loadToExtMap)) {
@@ -20,17 +22,17 @@ for (let [ loaderName, reExt ] of Object.entries(loadToExtMap)) {
 
 const presets = [ [ babelPresetEnv, {
   targets: {
-    browsers: config.browsers
+    browsers: config.browserslist
   },
   modules: false
 } ], babelPresetStage ]
 
 const plugins = [ babelPluginTransformRuntime ]
 
-if (config.multiple) {
-  presets.push(babelPresetReact)
-} else {
+if (fs.existsSync(viewsPath)) {
   plugins.push(babelPluginTransformVueJsx)
+} else {
+  presets.push(babelPresetReact)
 }
 
 module.exports = {
@@ -39,7 +41,7 @@ module.exports = {
     {
       test: /\.vue$/,
       loader: 'vue-loader',
-      include: relative.cwd('src'),
+      include: relative.cwd(config.__projectPath, 'src'),
       options: {
         loaders: {
           css: genLoaders('css', true),
@@ -78,17 +80,17 @@ module.exports = {
           plugins
         }
       },
-      include: relative.cwd('src')
+      include: relative.cwd(config.__projectPath, 'src')
     }, {
       test: /\.tsx?$/,
       use: [{
         loader: 'ts-loader',
         options: {
-          context: relative.cwd(),
+          context: relative.cwd(config.__projectPath),
           configFile: relative.cmd('tsconfig.json')
         }
       }],
-      include: relative.cwd('src')
+      include: relative.cwd(config.__projectPath, 'src')
     }, {
       test: /-file\.(png|jpe?g|gif|svg)$/,
       use: [{
@@ -99,7 +101,7 @@ module.exports = {
       }, {
         loader: 'img-loader',
         options: {
-          enabled: process.env.NODE_ENV === constant.PRODUCTION,
+          enabled: config.__env === 'production',
           gifsicle: {
             interlaced: false
           },
@@ -131,7 +133,7 @@ module.exports = {
       }, {
         loader: 'img-loader',
         options: {
-          enabled: process.env.NODE_ENV === constant.PRODUCTION,
+          enabled: config.__env === 'production',
           gifsicle: {
             interlaced: false
           },
@@ -139,7 +141,7 @@ module.exports = {
             progressive: true,
             arithmetic: false
           },
-          optipng: false, // disabled
+          optipng: false,
           pngquant: {
             floyd: 0.5,
             speed: 2
@@ -170,5 +172,12 @@ module.exports = {
       }]
     }
   ],
-  noParse: content => /(?:jquery|vue|lodash)(?:\.min)?\.js$/.test(content)
+  noParse: content => {
+    const keys = Object.keys(config.externals).join('|')
+    if (keys.length) {
+      const reKeys = new RegExp(`(?:${keys})(?:\\.min)?\\.js$`)
+      return reKeys.test(content)
+    }
+    return false
+  }
 }

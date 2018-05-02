@@ -1,20 +1,18 @@
 const fs = require('fs')
 const relative = require('../lib/relative')
-const packagePath = relative.cwd('./package.json')
 
-let fileConfig
+module.exports = path => {
+  const packagePath = relative.cwd(path, './package.json')
 
-if (fs.existsSync(packagePath)) {
-  const packageConfig = require(packagePath)
-  const talkConfig = packageConfig.talk || {}
-  const browserslist = packageConfig.browserslist || {}
+  if (fs.existsSync(packagePath)) {
+    const packageConfig = require(packagePath)
+    const talkConfig = packageConfig.talk || {}
+    const browserslist = packageConfig.browserslist || {}
 
-  fileConfig = {
-    ...talkConfig,
-    browserslist
+    return {
+      ...talkConfig,
+      browserslist
+    }
   }
-} else {
-  fileConfig = {}
+  return {}
 }
-
-module.exports = fileConfig

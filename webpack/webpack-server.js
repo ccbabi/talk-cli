@@ -1,5 +1,7 @@
-const config = require('../config')
+const { getConfig } = require('../config')
 const hooks = require('./webpack-hook')
+
+const config = getConfig()
 
 module.exports = {
   contentBase: false,
@@ -14,7 +16,7 @@ module.exports = {
   },
   noInfo: config.noInfo,
   https: config.https,
-  index: config.multiple ? 'nav.html' : 'index.html',
   historyApiFallback: true,
+  index: 'html/index.html',
   ...hooks
 }

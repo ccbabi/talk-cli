@@ -2,42 +2,39 @@ const fs = require('fs')
 const path = require('path')
 const relative = require('../lib/relative')
 const logger = require('../lib/logger')
-const config = require('../config')
+const { getConfig } = require('../config')
 
+const config = getConfig()
 let exists = false
 let entryInfos
 
-if (config.multiple) {
-  const pagesRoot = relative.cwd('src', 'pages')
-  if (!fs.existsSync(pagesRoot)) {
-    logger.error(`Oops, ${pagesRoot} 目录不存在！`)
-    process.exit(1)
-  }
-
-  entryInfos = fs.readdirSync(pagesRoot).reduce((entryInfos, page) => {
-    entryInfos.push(genEntryInfo(path.join(pagesRoot, page)))
-    return entryInfos
-  }, [])
-} else {
-  entryInfos = [genEntryInfo('src')]
+const pagesRoot = relative.cwd(config.__projectPath, 'src', 'pages')
+if (!fs.existsSync(pagesRoot)) {
+  logger.error(`Oops, ${pagesRoot} 目录不存在！`)
+  process.exit(1)
 }
 
-function genEntryInfo (dir) {
-  const templateExtensions = ['ejs', 'hbs', 'pug', 'html']
-  const entryExtensions = ['ts', 'js']
+entryInfos = fs.readdirSync(pagesRoot).reduce((entryInfos, dirName) => {
+  entryInfos.push(genEntryInfo(path.join(pagesRoot, dirName)))
+  return entryInfos
+}, [])
+
+function genEntryInfo (pageName) {
+  const templateExtensions = ['html', 'pug', 'ejs', 'hbs']
+  const entryExtensions = ['js', 'ts']
 
   let template, templateExists, templateExtension
   let entry, entryExists, entryExtension
 
   while (!templateExists && templateExtensions.length) {
     templateExtension = templateExtensions.shift()
-    template = relative.cwd(`${dir}/index.${templateExtension}`)
+    template = relative.cwd(`${pageName}/index.${templateExtension}`)
     templateExists = fs.existsSync(template)
   }
 
   while (!entryExists && entryExtensions.length) {
     entryExtension = entryExtensions.shift()
-    entry = relative.cwd(`${dir}/index.${entryExtension}`)
+    entry = relative.cwd(`${pageName}/index.${entryExtension}`)
     entryExists = fs.existsSync(entry)
   }
 
@@ -46,7 +43,7 @@ function genEntryInfo (dir) {
   }
 
   return {
-    pageName: dir === 'src' ? 'index' : path.basename(dir),
+    pageName: path.basename(pageName),
     entry,
     entryExists,
     template,

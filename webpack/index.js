@@ -1,32 +1,53 @@
+const isPlainObject = require('is-plain-object')
 const relative = require('../lib/relative')
-const plugins = require('../webpack/webpack-plugins')
 const helper = require('../webpack/webpack-helper')
+const plugins = require('../webpack/webpack-plugins')
 const module_ = require('../webpack/webpack-module')
-const other = require('../webpack/webpack-other')
-const config = require('../config')
 
+const { getConfig } = require('../config')
+
+const config = getConfig()
 const cmdModules = relative.cmd('node_modules')
-const cwdModules = relative.cwd('node_modules')
+const cwdModules = relative.cwd(config.__projectPath, 'node_modules')
+const baseEntry = {}
+let resolveAlias = {}
+
+if (isPlainObject(config.alias)) {
+  resolveAlias = Object.keys(config.alias).map(key => {
+    return { key: relative.cwd(config.__projectPath, config.alias[key]) }
+  })
+}
+
+if (config.base && config.base.length) {
+  baseEntry.base = config.base
+}
 
 module.exports = {
-  entry: helper.entry,
+  entry: {
+    ...helper.entry,
+    ...baseEntry
+  },
   output: {
-    path: relative.cwd('dist'),
+    path: relative.cwd(config.__projectPath, 'dist'),
     filename: 'js/[name].js',
-    publicPath: config.multiple ? '../' : './'
+    chunkFilename: 'js/[name]-[chunkhash:7].js',
+    publicPath: config.publicPath
   },
   module: module_,
   plugins,
   resolve: {
     modules: [ cmdModules, cwdModules ],
     alias: {
-      '@': relative.cwd('src'),
-      ...config.alias
+      '@': relative.cwd(config.__projectPath, 'src'),
+      ...resolveAlias
     },
     extensions: ['.js', '.vue', '.jsx', '.ts', '.tsx']
   },
   resolveLoader: {
     modules: [ cmdModules, cwdModules ]
   },
-  ...other
+  devtool: config.__env === 'development'
+    ? 'cheap-module-eval-source-map'
+    : 'none',
+  externals: config.externals
 }

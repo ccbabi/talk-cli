@@ -1,26 +1,23 @@
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isPlainObject = require('is-plain-object')
-const entryInfos = require('./webpack-entry')
-const constant = require('../config/constant')
-const config = require('../config')
 const relative = require('../lib/relative')
+const entryInfos = require('./webpack-entry')
+const { getConfig } = require('../config')
+
+const config = getConfig()
 
 function getEntry () {
   return entryInfos.reduce((webpackEntry, entryInfo) => {
     const { entryExists, pageName, entry } = entryInfo
     if (entryExists) {
       const newEntry = [ entry ]
-      if (!config.multiple) {
-        if (process.env.NODE_ENV === constant.PRODUCTION) {
-          newEntry.unshift(relative.cmd('lib/public-path'))
-        }
-        if (process.env.NODE_ENV === constant.DEVELOPMENT) {
-          newEntry.unshift(
-            'webpack/hot/only-dev-server',
-            `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`
-          )
-        }
+      if (config.__env === 'production') {
+        newEntry.unshift(relative.cmd('lib/public-path'))
+      }
+      if (config.__env === 'development') {
+        newEntry.unshift(
+          'webpack/hot/only-dev-server',
+          `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`
+        )
       }
       webpackEntry[pageName] = newEntry
     }
@@ -37,13 +34,7 @@ function getHtmlPlugins () {
 
     htmlOption = {
       title: pageName,
-      filename: (function () {
-        if (process.env.NODE_ENV === constant.DEVELOPMENT || !config.multiple) {
-          return `${pageName}.html`
-        }
-
-        return `html/${pageName}.html`
-      })(),
+      filename: `html/${pageName}.html`,
       minify: {
         removeComments: true
       }
@@ -56,12 +47,7 @@ function getHtmlPlugins () {
     if (!entryExists) {
       htmlOption.inject = false
     } else {
-      htmlOption.chunks = ['main', 'common', pageName]
-    }
-
-    if (!config.multiple) {
-      htmlOption.inject = true
-      delete htmlOption.chunks
+      htmlOption.chunks = ['base', 'common', pageName]
     }
 
     plugins.push(new HtmlWebpackPlugin(htmlOption))
@@ -69,10 +55,10 @@ function getHtmlPlugins () {
     return plugins
   }, [])
 
-  if (process.env.NODE_ENV !== constant.PRODUCTION && config.multiple) {
+  if (config.__env !== 'production') {
     plugins.push(new HtmlWebpackPlugin({
       title: '51Talk - 开发导航页',
-      filename: 'nav.html',
+      filename: 'talk.html',
       template: relative.cmd('template', 'nav.ejs'),
       inject: false,
       pages: getNavPages()
@@ -80,17 +66,6 @@ function getHtmlPlugins () {
   }
 
   return plugins
-}
-
-function getAppPlugins () {
-  const plugin = []
-  if (isPlainObject(config.provide)) {
-    plugin.push(new webpack.ProvidePlugin(config.provide))
-  }
-  if (isPlainObject(config.define)) {
-    plugin.push(new webpack.DefinePlugin(config.define))
-  }
-  return plugin
 }
 
 function getNavPages () {
@@ -105,6 +80,5 @@ function getNavPages () {
 module.exports = {
   entry: getEntry(),
   htmlPlugins: getHtmlPlugins(),
-  appPlugins: getAppPlugins(),
   navPages: getNavPages()
 }
