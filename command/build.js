@@ -40,6 +40,7 @@ module.exports = () => {
         console.log(`[${new Date().toLocaleString()}] 编译完成`)
       } else {
         console.log('编译完成')
+        process.exit(0)
       }
     }
 

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-// const ReloadPlugin = require('reload-html-webpack-plugin')
+const ReloadPlugin = require('reload-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const isPlainObject = require('is-plain-object')
 const helper = require('./webpack-helper')
@@ -56,15 +56,15 @@ if (isPlainObject(config.define)) {
   plugins.push(new webpack.DefinePlugin(config.define))
 }
 
-  // if (config.multiple) {
-  //   plugins.push(new ReloadPlugin())
-  // }
-
 if (config.__env === 'development') {
   plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
+
+  if (!config.vue) {
+    plugins.push(new ReloadPlugin())
+  }
 
   if (fs.existsSync(assetsPath)) {
     plugins.push(

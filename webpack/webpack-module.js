@@ -1,16 +1,15 @@
-const fs = require('fs')
 const babelPresetEnv = require('babel-preset-env')
 const babelPresetReact = require('babel-preset-react')
-const babelPresetStage = require('babel-preset-stage-3')
+const babelPresetStage = require('babel-preset-stage-0')
 const babelPluginTransformVueJsx = require('babel-plugin-transform-vue-jsx')
 const babelPluginTransformRuntime = require('babel-plugin-transform-runtime')
+const babelPluginTransformReactJsx = require('babel-plugin-transform-react-jsx')
 const genLoaders = require('./webpack-loader')
 const relative = require('../lib/relative')
 const { getConfig } = require('../config')
 
 const config = getConfig()
 const loadToExtMap = { css: /\.css$/, less: /\.less$/, stylus: /.styl$/ }
-const viewsPath = relative.cwd(config.__projectPath, 'src', 'views')
 const cssRule = []
 
 for (let [ loaderName, reExt ] of Object.entries(loadToExtMap)) {
@@ -29,10 +28,13 @@ const presets = [ [ babelPresetEnv, {
 
 const plugins = [ babelPluginTransformRuntime ]
 
-if (fs.existsSync(viewsPath)) {
+if (config.vue) {
   plugins.push(babelPluginTransformVueJsx)
 } else {
   presets.push(babelPresetReact)
+  plugins.push([babelPluginTransformReactJsx, {
+    'pragma': config.jsx
+  }])
 }
 
 module.exports = {

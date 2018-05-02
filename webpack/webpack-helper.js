@@ -13,9 +13,9 @@ function getEntry () {
       if (config.__env === 'production') {
         newEntry.unshift(relative.cmd('lib/public-path'))
       }
-      if (config.__env === 'development') {
+      if (config.__env === 'development' && config.vue) {
         newEntry.unshift(
-          'webpack/hot/only-dev-server',
+          'webpack/hot/dev-server',
           `webpack-dev-server/client?${config.https ? 'https' : 'http'}://0.0.0.0:${config.port}/`
         )
       }
@@ -55,15 +55,15 @@ function getHtmlPlugins () {
     return plugins
   }, [])
 
-  if (config.__env !== 'production') {
-    plugins.push(new HtmlWebpackPlugin({
-      title: '51Talk - 开发导航页',
-      filename: 'talk.html',
-      template: relative.cmd('template', 'nav.ejs'),
-      inject: false,
-      pages: getNavPages()
-    }))
-  }
+  // if (config.__env !== 'production') {
+  //   plugins.push(new HtmlWebpackPlugin({
+  //     title: '51Talk - 开发导航页',
+  //     filename: 'talk.html',
+  //     template: relative.cmd('template', 'nav.ejs'),
+  //     inject: false,
+  //     pages: getNavPages()
+  //   }))
+  // }
 
   return plugins
 }

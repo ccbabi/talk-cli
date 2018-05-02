@@ -22,7 +22,8 @@ program
   .command('start [projectName]')
   .description('开发一个项目')
   .option('-o --open', '打开浏览器')
-  .option('-p --proxy', '开启联调模式')
+  .option('-p --port <port>', '指定服务端口')
+  .option('-P --proxy', '开启联调模式')
   .option('-H --https', '开启https服务')
   .action((projectName, option) => {
     process.env.NODE_ENV = 'development'
@@ -30,6 +31,7 @@ program
       open: option.open,
       proxy: option.proxy,
       https: option.https,
+      port: option.port,
       __projectPath: !projectName || projectName === '.'
         ? '.'
         : projectName,
