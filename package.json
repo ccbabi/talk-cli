@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "51talk",
   "main": "index.js",
   "scripts": {
@@ -48,7 +48,6 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.0.6",
     "http-proxy-middleware": "^0.18.0",
-    "img-loader": "^2.0.1",
     "inquirer": "^5.2.0",
     "is-http-url": "^2.0.0",
     "is-plain-object": "^2.0.4",

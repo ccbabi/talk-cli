@@ -100,29 +100,6 @@ module.exports = {
         options: {
           name: 'images/[name]-[hash:7].[ext]'
         }
-      }, {
-        loader: 'img-loader',
-        options: {
-          enabled: config.__env === 'production',
-          gifsicle: {
-            interlaced: false
-          },
-          mozjpeg: {
-            progressive: true,
-            arithmetic: false
-          },
-          optipng: false, // disabled
-          pngquant: {
-            floyd: 0.5,
-            speed: 2
-          },
-          svgo: {
-            plugins: [
-              { removeTitle: true },
-              { convertPathData: false }
-            ]
-          }
-        }
       }]
     }, {
       test: filename => /\.(png|jpe?g|gif|svg)$/.test(filename) && !/-file\.(png|jpe?g|gif|svg)$/.test(filename),
@@ -131,29 +108,6 @@ module.exports = {
         options: {
           limit: 10000,
           name: 'images/[name]-[hash:7].[ext]'
-        }
-      }, {
-        loader: 'img-loader',
-        options: {
-          enabled: config.__env === 'production',
-          gifsicle: {
-            interlaced: false
-          },
-          mozjpeg: {
-            progressive: true,
-            arithmetic: false
-          },
-          optipng: false,
-          pngquant: {
-            floyd: 0.5,
-            speed: 2
-          },
-          svgo: {
-            plugins: [
-              { removeTitle: true },
-              { convertPathData: false }
-            ]
-          }
         }
       }]
     }, {
