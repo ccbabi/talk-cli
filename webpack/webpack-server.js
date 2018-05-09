@@ -17,6 +17,7 @@ module.exports = {
   noInfo: config.noInfo,
   https: config.https,
   historyApiFallback: true,
+  allowedHosts: config.allowedHosts,
   index: 'html/index.html',
   ...hooks
 }
