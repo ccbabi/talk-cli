@@ -31,5 +31,6 @@ module.exports = {
   ],
   allowedHosts: [
     '.51talk.com'
-  ]
+  ],
+  cookie: {}
 }
