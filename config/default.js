@@ -4,7 +4,11 @@ module.exports = {
   'open': false,
   'watch': false,
   'proxy': false,
-  'proxyTarget': null,
+  'proxyConfig': [{
+    'proxyTarget': null,
+    'proxyContext': ['/api'],
+    'changeOrigin': null
+  }],
   'provide': {},
   'define': {},
   'alias': {},
@@ -13,7 +17,7 @@ module.exports = {
   'compress': true,
   'noInfo': true,
   'mockDir': 'mock',
-  'mockContext': '/api',
+  'mockContext': ['/api'],
   'mockCallback': 'callback',
   'staticDir': 'static',
   'staticContext': '/static',

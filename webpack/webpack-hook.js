@@ -13,7 +13,7 @@ const config = getConfig()
 const mockDir = relative.cwd(config.__projectPath, config.mockDir)
 const staticDir = relative.cwd(config.__projectPath, config.staticDir)
 const reIP4 = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
-let up
+let proxyValid = false
 
 exports.before = function (app) {
   if (!config.proxy && fs.existsSync(mockDir)) {
@@ -21,29 +21,41 @@ exports.before = function (app) {
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json())
     app.use(connectMockMiddleware(mockDir, {
-      prefix: config.mockContext,
+      prefix: addSlash(config.mockContext),
       callback: config.mockCallback
     }))
   }
 
-  if (config.proxy && config.target) {
-    if (!/^https?:/.test(config.target)) {
-      config.target = 'http://' + config.target
+  if (config.proxy) {
+    config.proxyConfig.forEach(proxyItem => {
+      if (proxyItem.proxyTarget && proxyItem.proxyContext) {
+        if (!/^https?:/.test(proxyItem.proxyTarget)) {
+          proxyItem.proxyTarget = 'http://' + proxyItem.proxyTarget
+        }
+
+        if (!isHttpUrl(proxyItem.proxyTarget)) {
+          logger.warning(`Oops, 指定的${proxyItem.proxyTarget}无效！`)
+          return
+        }
+
+        proxyItem.proxyContext = addSlash(proxyItem.proxyContext)
+
+        if (Array.isArray(proxyItem.proxyContext)) {
+          proxyItem.proxyContext.forEach(contextItem => {
+            app.use(contextItem, httpProxyMiddleware({
+              target: proxyItem.proxyTarget,
+              changeOrigin: proxyItem.changeOrigin || !reIP4.test(url.parse(proxyItem.proxyTarget).hostname),
+              secure: false
+            }))
+          })
+          proxyValid = true
+        }
+      }
+    })
+
+    if (proxyValid) {
+      logger.info('联调模式已开启')
     }
-
-    if (!isHttpUrl(config.target)) {
-      logger.warning(`Oops, 指定的${config.target}无效！`)
-      return
-    }
-
-    logger.info('联调模式已开启')
-    up = url.parse(config.target)
-
-    app.use(config.context, httpProxyMiddleware({
-      target: config.target,
-      changeOrigin: !reIP4.test(up.hostname),
-      secure: false
-    }))
   }
 }
 
@@ -51,4 +63,8 @@ exports.after = function (app) {
   if (fs.existsSync(staticDir)) {
     app.use(config.staticContext, serveStatic(staticDir))
   }
+}
+
+function addSlash (arr) {
+  return arr.map(item => '/' + item.replace(/\//, ''))
 }
