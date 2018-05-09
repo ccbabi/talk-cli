@@ -66,5 +66,5 @@ exports.after = function (app) {
 }
 
 function addSlash (arr) {
-  return arr.map(item => '/' + item.replace(/\//, ''))
+  return arr.map(item => '/' + item.replace(/^\//, ''))
 }
