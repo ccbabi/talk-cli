@@ -9,7 +9,7 @@ const { getConfig } = require('../config')
 const relative = require('../lib/relative')
 
 const config = getConfig()
-const assetsPath = relative.cwd(config.__projectPath + 'src/assets')
+const assetsPath = relative.cwd(config.__projectPath, 'src/assets')
 const entries = Object.keys(helper.entry)
 
 const plugins = [
@@ -65,19 +65,19 @@ if (config.__env === 'development') {
   if (!config.vue) {
     plugins.push(new ReloadPlugin())
   }
-
-  if (fs.existsSync(assetsPath)) {
-    plugins.push(
-      new CopyWebpackPlugin({
-        context: assetsPath,
-        from: '**/*',
-        toType: 'dir'
-      })
-    )
-  }
 }
 
 if (config.__env === 'production') {
+  if (fs.existsSync(assetsPath)) {
+    plugins.push(
+      new CopyWebpackPlugin([{
+        context: assetsPath,
+        from: '**/*',
+        toType: 'dir'
+      }])
+    )
+  }
+
   plugins.push(new webpack.ProgressPlugin())
 
   if (config.compress) {
