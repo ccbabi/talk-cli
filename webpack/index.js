@@ -9,6 +9,7 @@ const { getConfig } = require('../config')
 const config = getConfig()
 const cmdModules = relative.cmd('node_modules')
 const cwdModules = relative.cwd(config.__projectPath, 'node_modules')
+const libModules = relative.cwd(config.__projectPath, 'src/lib')
 const baseEntry = {}
 let resolveAlias = {}
 
@@ -36,7 +37,7 @@ module.exports = {
   module: module_,
   plugins,
   resolve: {
-    modules: [ cmdModules, cwdModules ],
+    modules: [ cmdModules, cwdModules, libModules ],
     alias: {
       '@': relative.cwd(config.__projectPath, 'src'),
       ...resolveAlias
