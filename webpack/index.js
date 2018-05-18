@@ -50,5 +50,13 @@ module.exports = {
   devtool: config.__env === 'development'
     ? 'cheap-module-eval-source-map'
     : 'none',
-  externals: config.externals
+  externals: config.externals,
+  performance: {
+    hints: config.__env === 'production' ? 'warning' : false,
+    maxEntrypointSize: 400000,
+    maxAssetSize: 200000,
+    assetFilter: assetFilename => {
+      return (/\.(?:css|js)$/.test(assetFilename))
+    }
+  }
 }
