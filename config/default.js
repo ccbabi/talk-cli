@@ -32,5 +32,15 @@ module.exports = {
   allowedHosts: [
     '.51talk.com'
   ],
-  cookie: {}
+  cookie: {},
+  toRem: false,
+  toRemOption: {
+    replace: true,
+    rootValue: 75,
+    unitPrecision: 5,
+    propList: ['*'],
+    selectorBlackList: [],
+    mediaQuery: false,
+    minPixelValue: 0
+  }
 }
