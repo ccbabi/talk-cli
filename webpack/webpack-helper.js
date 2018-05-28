@@ -10,7 +10,7 @@ function getEntry () {
     const { entryExists, pageName, entry } = entryInfo
     if (entryExists) {
       const newEntry = [ entry ]
-      if (config.__env === 'production') {
+      if (config.__env === 'production' && config.publicPath.startsWith('.')) {
         newEntry.unshift(relative.cmd('lib/public-path'))
       }
       if (config.__env === 'development' && config.vue) {
