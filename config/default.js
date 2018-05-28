@@ -43,5 +43,6 @@ module.exports = {
     selectorBlackList: [],
     mediaQuery: false,
     minPixelValue: 0
-  }
+  },
+  dest: 'dist'
 }

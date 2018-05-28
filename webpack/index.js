@@ -1,3 +1,4 @@
+const path = require('path')
 const isPlainObject = require('is-plain-object')
 const relative = require('../lib/relative')
 const helper = require('../webpack/webpack-helper')
@@ -29,7 +30,9 @@ module.exports = {
     ...baseEntry
   },
   output: {
-    path: relative.cwd(config.__projectPath, 'dist'),
+    path: path.isAbsolute
+      ? config.dest
+      : relative.cwd(config.__projectPath, config.dest),
     filename: 'js/[name].js',
     chunkFilename: 'js/[name]-[chunkhash:7].js',
     publicPath: config.publicPath
