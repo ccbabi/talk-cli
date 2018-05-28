@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const webpack = require('webpack')
 const rimraf = require('rimraf')
 const Pea = require('pea-js').default
@@ -7,10 +8,14 @@ module.exports = () => {
   const relative = require('../lib/relative')
   const webpackConfig = require('../webpack')
   const { getConfig } = require('../config')
-  const distPath = relative.cwd('dist')
+  const config = getConfig()
+
+  const distPath = path.isAbsolute(config.dest)
+    ? config.dest
+    : relative.cwd(config.__projectPath, config.dest)
+
   const distExists = fs.existsSync(distPath)
   const ctrl = new Pea()
-  const config = getConfig()
 
   ctrl.use(next => {
     if (!distExists) return next()

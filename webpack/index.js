@@ -30,7 +30,7 @@ module.exports = {
     ...baseEntry
   },
   output: {
-    path: path.isAbsolute
+    path: path.isAbsolute(config.dest)
       ? config.dest
       : relative.cwd(config.__projectPath, config.dest),
     filename: 'js/[name].js',
