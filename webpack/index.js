@@ -33,7 +33,7 @@ module.exports = {
     path: path.isAbsolute(config.dest)
       ? config.dest
       : relative.cwd(config.__projectPath, config.dest),
-    filename: 'js/[name].js',
+    filename: `js/[name].js${config.__env === 'production' ? '?v=[chunkhash:7]' : ''}`,
     chunkFilename: 'js/[name]-[chunkhash:7].js',
     publicPath: config.publicPath
   },

@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ReloadPlugin = require('reload-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const AssetsVersionWebpackPlugin = require('assets-version-webpack-plugin')
 const isPlainObject = require('is-plain-object')
 const helper = require('./webpack-helper')
 const { getConfig } = require('../config')
@@ -21,7 +22,7 @@ const plugins = [
     }
   }),
   new ExtractTextPlugin({
-    filename: 'css/[name].css',
+    filename: 'css/[name].css?v=[contentHash:7]',
     disable: config.__env === 'development',
     allChunks: true
   }),
@@ -68,6 +69,11 @@ if (config.__env === 'development') {
 }
 
 if (config.__env === 'production') {
+  plugins.push(
+    new webpack.ProgressPlugin(),
+    new AssetsVersionWebpackPlugin()
+  )
+
   if (fs.existsSync(assetsPath)) {
     plugins.push(
       new CopyWebpackPlugin([{
@@ -77,8 +83,6 @@ if (config.__env === 'production') {
       }])
     )
   }
-
-  plugins.push(new webpack.ProgressPlugin())
 
   if (config.compress) {
     plugins.push(
