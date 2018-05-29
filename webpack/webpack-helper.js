@@ -55,16 +55,6 @@ function getHtmlPlugins () {
     return plugins
   }, [])
 
-  // if (config.__env !== 'production') {
-  //   plugins.push(new HtmlWebpackPlugin({
-  //     title: '51Talk - 开发导航页',
-  //     filename: 'talk.html',
-  //     template: relative.cmd('template', 'nav.ejs'),
-  //     inject: false,
-  //     pages: getNavPages()
-  //   }))
-  // }
-
   return plugins
 }
 
