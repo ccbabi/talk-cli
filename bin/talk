@@ -2,7 +2,7 @@
 
 const program = require('commander')
 const pkg = require('../package.json')
-const { setConfig, getConfig } = require('../config')
+const { setConfig } = require('../config')
 
 program
   .version(pkg.version)
