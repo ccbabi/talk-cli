@@ -1,9 +1,12 @@
+const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ReloadPlugin = require('reload-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const AssetsVersionWebpackPlugin = require('assets-version-webpack-plugin')
+const InlineSourceHtmlWebpackPlugin = require('inline-source-html-webpack-plugin')
+const HtmlWebpackInjectPlugin = require('../plugins/html-webpack-inject-plugin')
 const isPlainObject = require('is-plain-object')
 const helper = require('./webpack-helper')
 const { getConfig } = require('../config')
@@ -27,7 +30,10 @@ const plugins = [
     allChunks: true
   }),
   new webpack.optimize.OccurrenceOrderPlugin(),
-  new webpack.optimize.ModuleConcatenationPlugin()
+  new webpack.optimize.ModuleConcatenationPlugin(),
+  new InlineSourceHtmlWebpackPlugin({
+    rootpath: relative.cwd(config.__projectPath)
+  })
 ]
 
 if (entries.length > 1) {
@@ -55,6 +61,25 @@ if (isPlainObject(config.provide)) {
 
 if (isPlainObject(config.define)) {
   plugins.push(new webpack.DefinePlugin(config.define))
+}
+
+if (config.toRem && config.inlineFlexible) {
+  const flexiblePath = path.relative(
+    relative.cwd(config.__projectPath),
+    relative.cmd('node_modules/amfe-flexible/index.js')
+  )
+
+  plugins.push(new HtmlWebpackInjectPlugin({
+    externals: [{
+      tag: 'script',
+      attrs: {
+        src: flexiblePath,
+        type: 'text/javascript',
+        inline: true
+      }
+    }],
+    parent: 'head'
+  }))
 }
 
 if (config.__env === 'development') {

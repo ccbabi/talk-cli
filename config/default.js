@@ -44,5 +44,6 @@ module.exports = {
     mediaQuery: false,
     minPixelValue: 0
   },
-  dest: 'dist'
+  dest: 'dist',
+  inlineFlexible: true
 }
