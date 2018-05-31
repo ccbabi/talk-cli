@@ -32,7 +32,9 @@ const plugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
   new InlineSourceHtmlWebpackPlugin({
-    rootpath: relative.cwd(config.__projectPath)
+    rootpath: relative.cwd(config.__projectPath),
+    saveRemote: false,
+    compress: config.__env === 'production'
   })
 ]
 
