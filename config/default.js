@@ -37,7 +37,7 @@ module.exports = {
   toRem: false,
   toRemOption: {
     replace: true,
-    rootValue: 37.5,
+    rootValue: 75,
     unitPrecision: 5,
     propList: ['*'],
     selectorBlackList: [],
