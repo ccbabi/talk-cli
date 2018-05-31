@@ -20,8 +20,12 @@ if (isPlainObject(config.alias)) {
   })
 }
 
-if (config.base && config.base.length) {
-  baseEntry.base = config.base
+if (config.normalizeCss) {
+  baseEntry.base = ['normalize.css']
+}
+
+if (Array.isArray(config.base) && config.base.length) {
+  baseEntry.base = baseEntry.base.concat(config.base)
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "2.6.2",
+  "version": "2.7.0",
   "description": "51talk",
   "main": "index.js",
   "scripts": {
@@ -55,6 +55,7 @@
     "is-plain-object": "^2.0.4",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
+    "normalize.css": "^8.0.0",
     "opn": "^5.2.0",
     "ora": "^2.0.0",
     "pea-js": "^0.4.1",

@@ -48,7 +48,7 @@ if (entries.length > 1) {
   )
 }
 
-if (config.base && config.base.length) {
+if (config.normalizeCss || (config.base && config.base.length)) {
   plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       name: 'base',

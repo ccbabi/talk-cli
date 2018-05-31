@@ -45,5 +45,6 @@ module.exports = {
     minPixelValue: 0
   },
   dest: 'dist',
-  inlineFlexible: true
+  inlineFlexible: true,
+  normalizeCss: true
 }
