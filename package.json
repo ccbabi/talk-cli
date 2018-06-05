@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "51talk",
   "main": "index.js",
   "scripts": {

@@ -48,10 +48,12 @@ program
   .command('build [projectName]')
   .description('打包一个项目')
   .option('-w --watch', '监听模式打包')
+  .option('--no-compress', '不压缩代码')
   .action((projectName, option) => {
     process.env.NODE_ENV = 'production'
     setConfig({
       watch: option.watch,
+      compress: option.compress,
       __projectPath: !projectName || projectName === '.'
         ? '.'
         : projectName,

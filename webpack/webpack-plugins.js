@@ -34,7 +34,7 @@ const plugins = [
   new InlineSourceHtmlWebpackPlugin({
     rootpath: relative.cwd(config.__projectPath),
     saveRemote: false,
-    compress: config.__env === 'production'
+    compress: config.compress && config.__env === 'production'
   })
 ]
 
