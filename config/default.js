@@ -44,6 +44,9 @@ module.exports = {
     mediaQuery: false,
     minPixelValue: 0
   },
+  polyfill: {
+    promise: true
+  },
   dest: 'dist',
   inlineFlexible: true,
   normalizeCss: true

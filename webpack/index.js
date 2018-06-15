@@ -21,7 +21,11 @@ if (isPlainObject(config.alias)) {
 }
 
 if (config.normalizeCss) {
-  baseEntry.base = ['normalize.css']
+  baseEntry.base = (baseEntry.base || []).concat('normalize.css')
+}
+
+if (config.polyfill.promise) {
+  baseEntry.base = (baseEntry.base || []).concat('es6-promise/auto')
 }
 
 if (Array.isArray(config.base) && config.base.length) {
