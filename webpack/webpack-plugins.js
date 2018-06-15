@@ -96,10 +96,11 @@ if (config.__env === 'development') {
 }
 
 if (config.__env === 'production') {
-  plugins.push(
-    new webpack.ProgressPlugin(),
-    new AssetsVersionWebpackPlugin()
-  )
+  plugins.push(new webpack.ProgressPlugin())
+
+  if (config.versionFile) {
+    plugins.push(new AssetsVersionWebpackPlugin())
+  }
 
   if (fs.existsSync(assetsPath)) {
     plugins.push(

@@ -49,5 +49,6 @@ module.exports = {
   },
   dest: 'dist',
   inlineFlexible: true,
-  normalizeCss: true
+  normalizeCss: true,
+  versionFile: false
 }
