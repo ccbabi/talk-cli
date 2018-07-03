@@ -12,13 +12,6 @@ const cmdModules = relative.cmd('node_modules')
 const cwdModules = relative.cwd(config.__projectPath, 'node_modules')
 const libModules = relative.cwd(config.__projectPath, 'src/lib')
 const baseEntry = {}
-let resolveAlias = {}
-
-if (isPlainObject(config.alias)) {
-  resolveAlias = Object.keys(config.alias).map(key => {
-    return { key: relative.cwd(config.__projectPath, config.alias[key]) }
-  })
-}
 
 if (config.normalizeCss) {
   baseEntry.base = (baseEntry.base || []).concat('normalize.css')
@@ -51,7 +44,7 @@ module.exports = {
     modules: [ cmdModules, cwdModules, libModules ],
     alias: {
       '@': relative.cwd(config.__projectPath, 'src'),
-      ...resolveAlias
+      ...config.alias
     },
     extensions: ['.js', '.vue', '.jsx', '.ts', '.tsx']
   },
