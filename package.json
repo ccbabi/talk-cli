@@ -1,6 +1,6 @@
 {
   "name": "talk-cli",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "51talk",
   "main": "index.js",
   "scripts": {
@@ -19,13 +19,16 @@
   },
   "homepage": "https://github.com/ccbabi/talk-cli#readme",
   "bin": {
-    "talk": "./bin/talk"
+    "talk": "./bin/talk",
+    "tk": "./bin/talk"
   },
   "dependencies": {
+    "ajv": "^6.5.2",
     "amfe-flexible": "^2.2.1",
     "assets-version-webpack-plugin": "^1.0.0",
     "autoprefixer": "^8.1.0",
     "babel-core": "^6.26.0",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
